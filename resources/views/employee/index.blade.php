@@ -21,6 +21,8 @@
             <!-- End Navbar -->
             <div class="content">
                 <div class="container-fluid">
+                    <a href="{{route('employee.create')}}" class="btn btn-info btn-fill btn-sm">Add employee</a>
+                    <hr>
                     <div class="row">
                         @if(count($employees ) < 1)
                         <div class="col-md-3"></div>
@@ -34,43 +36,36 @@
                             </div>
                         </div>
                         @else
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Employees</h4>
+                        @foreach($employees as $employee)
+                        <div class="col-md-4">
+                            <div class="card card-user">
+                                <div class="card-image">
+                                    <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="...">
                                 </div>
-                                <div class="card-body table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <th>S\No</th>
-                                            <th>Employee name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Date employed</th>
-                                            <th>Action</th>
-                                        </thead>
-                                        <tbody>
-                                            <?php $i = 1; ?>
-                                            @foreach($employees as $employee)
-                                                <td>{{$i}}</td>
-                                                <td>{{$employee->firstname}} {{$employee->lastname}} </td>
-                                                <td>{{$employee->email}}</td>
-                                                <td>{{$employee->phone}}</td>
-                                                <td>{{date('d M, Y', strtotime($employee->date_employed))}}</td>
-                                                <td><a href="{{route('employee.show', $employee->id)}}" class="btn btn-primary btn-fill btn-sm btn-round"><i class="fa fa-list"></i></a></td>
-                                                <?php $i++; ?>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                        
+                                <div class="card-body">
+                                    <div class="author">
+                                        <a href="#">
+                                            <img class="avatar border-gray" src="/assets/img/faces/avatar.png" alt="...">
+                                            <h5 class="title">{{$employee->firstname}} {{$employee->lastname}}</h5>
+                                        </a>
+                                        <p class="description">
+                                            {{$employee->phone}}
+                                        </p>
+                                    </div>
+                                    <p class="description text-center">
+                                       <span class="badge badge-success"> Employee</span>
+                                        <br> Joined on the {{date('d M, Y', strtotime($employee->date_employed))}}
+                                      
+                                    </p>
                                 </div>
-                                <div class="card-footer">
-                                    <a class="btn btn-info " href="{{route('employee.create')}}">Add employee</a>
-                                </div>
+                               
                             </div>
                         </div>
+                       @endforeach
                         @endif
+
                     </div>
+
                 </div>
             </div>
             <footer class="footer">
