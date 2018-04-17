@@ -16,9 +16,8 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_id');
-            $table->integer('customer_id');
             $table->integer('quantity');
-            $table->float('total');
+            $table->double('total');
             $table->integer('transaction_id');
             $table->timestamps();
         });

@@ -17,7 +17,7 @@ class CreateTransactionsTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('customer_id');
-            $table->float('total');
+            $table->double('total');
             $table->timestamps();
         });
     }

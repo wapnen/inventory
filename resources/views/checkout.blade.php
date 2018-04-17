@@ -53,7 +53,7 @@
                                             <select class="form-control" name="customer" id="customer" required>
                                               <option>--Select customer--</option>
                                               @foreach(App\Customer::all() as $customer)
-                                                <option value="{{$customer->id}}">{{$customer->name}} <span> {{$customer->phone}}</span></option>
+                                                <option value="{{$customer->id}}">{{$customer->name}} <span>(Tel- {{$customer->phone}} )</span></option>
                                               @endforeach
                                             </select>
                                           </div>
