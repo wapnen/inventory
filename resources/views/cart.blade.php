@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-   @include('layouts.head', ['title' => 'Products'])
+   @include('layouts.head', ['title' => 'Sell product'])
    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
    <link rel="stylesheet" href="/assets/css/easy-autocomplete.min.css">
 
@@ -18,39 +18,32 @@
 
         Tip 2: you can also add an image using data-image tag
     -->
-            @include('layouts.sidebar', ['selected' => 'product'])
+            @include('layouts.sidebar', ['selected' => 'cart'])
         </div>
         <div class="main-panel">
             <!-- Navbar -->
-            @include('layouts.nav', ['title' => 'Store products'])
+            @include('layouts.nav', ['title' => 'Checkout'])
             <!-- End Navbar -->
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        @if(count($products ) < 1)
-                        <div class="col-md-3"></div>
-                        <div class="col-md-5">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <img class="img " src="/assets/img/warning.png" style="height: 200px; width: 200px;">
-                                    <h5>No products found in the store!</h5>
-                                    <a class="btn btn-info " href="{{route('product.create')}}">Add product</a>
-                                </div>
-                            </div>
-                        </div>
-                        @else
+
                         <div class="col-md-12">
                           <div class="card">
                             <div class="card-body">
-                                <form method="" action="" class="inline-form">
+                                <form method="post" action="{{route('cart.store')}}" class="inline-form">
+                                  @csrf
                               <div class="row">
-
                                     <div class="col-md-9">
-                                      <input id = "search" type="text" name="search" class="form-control" placeholder="Search for product" /required>
+                                      <input id = "search" type="text" name="search"  class=" form-control" placeholder="Search for product" /required>
+                                      <input type="hidden" name="product_id" id="product_id" />
                                     </div>
-                                    <div class="col-md-3 text-center">
-                                      <button submit class="btn btn-info btn-fill ">Add to cart</button>
-                                      <button class="btn btn-warning btn-fill ">View</button>
+                                    <div class="col-md-1">
+                                      <input type="number" name="quantity" value="1" class="form-control" /required>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                      <button type = "submit" class="btn btn-info btn-fill " id="add-to-cart" disabled>Add to cart</button>
+
                                     </div>
                               </div>
 
@@ -61,21 +54,20 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Products</h4>
+                                    <h4 class="card-title">Cart | N{{Cart::total()}}</h4>
                                 </div>
                                 <div class="card-body table-responsive">
                                     <table class="table table-striped">
                                         <thead>
                                             <th>S\No</th>
                                             <th>Product name</th>
-                                            <th>Category</th>
                                             <th>Unit price</th>
-                                            <th>Quantity remaining</th>
+                                            <th>Quantity</th>
                                             <th>Action</th>
                                         </thead>
                                         <tbody>
                                             <?php $i = 1; ?>
-                                            @foreach($products as $product)
+                                            @foreach(Cart::content() as $product)
                                                 <td>{{$i}}</td>
                                                 <td>{{$product->name}} </td>
                                                 <td>{{$product->type}}</td>
@@ -115,13 +107,13 @@
                                     </table>
 
                                 </div>
-                                <div class="card-footer">
+                                <!-- <div class="card-footer">
                                     <a class="btn btn-success btn-fill" href="{{route('product.create')}}">Add product</a>
-                                </div>
+                                </div> -->
                             </div>
 
                         </div>
-                        @endif
+
                     </div>
                 </div>
             </div>
@@ -143,28 +135,6 @@
 </script>
 @endif
 <script type="text/javascript">
-    $('#edit').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var id = button.data('id') // Extract info from data-* attributes
-
-  var name = button.data('name')
-  var brand = button.data('brand')
-  var type = button.data('type')
-  var description = button.data('description')
-  var size = button.data('size')
-  var quantity = button.data('quantity')
-  var price = button.data('price')
-  var modal = $(this)
-  modal.find(' #name').val(name)
-  modal.find('#brand').val(brand)
-  modal.find('#type').val(type)
-  modal.find('#description').val(description)
-  modal.find('#size').val(size)
-  modal.find('#quantity').val(quantity)
-  modal.find('#price').val(price)
-  $(' #edit_form').prop('action', "/product/"+id)
-
-})
 
  //delete a product
  // confirm delete form
@@ -183,9 +153,7 @@ $('.delete').click(function(e){
     .then((willDelete) => {
       if (willDelete) {
         $("#form"+form).submit();
-        // swal("Done!", {
-        //   icon: "success",
-        // });
+
       }
     });
 });
@@ -214,9 +182,32 @@ var options = {
     data.phrase = $("#search").val();
     return data;
   },
+  template: {
+		type: "description",
+		fields: {
+			description: "price"
+		}
+	},
+  list: {
+    onClickEvent: function(){
+      alert($("#search").getSelectedItemData().id);
+      $('#add-to-cart').prop('disabled', false);
+      var value = $("#search").getSelectedItemData().id;
+			$("#product_id").val(value).trigger("change");
+    },
+    onChooseEvent: function(){
+      alert(getSelectedItemData().id);
+      $('#add-to-cart').prop('disabled', false);
+    }
+  }
 
 };
 
 $("#search").easyAutocomplete(options);
+
+
+$('#search').keyup(function(){
+    $('#add-to-cart').prop('disabled', true);
+});
 </script>
 </html>

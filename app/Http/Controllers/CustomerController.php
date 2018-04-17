@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Product;
+use App\Customer;
+use Illuminate\Validation\Rule;
+use Validator;
 
-class ProductController extends Controller
+class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +16,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //show all products in the store
-        $products = Product::where('quantity', '>' , 1)->get();
-        return view('product.index', compact('products'));
+        //
+        $customers = Customer::all();
+        return view('customer.index', compact('customers'));
     }
 
     /**
@@ -26,8 +28,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //show add product form
-        return view('product.create');
+        //
     }
 
     /**
@@ -38,16 +39,16 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //validate request
+        //
         $this->validate($request, [
-            'quantity' => 'required|numeric',
-            'price' => 'required|numeric']);
-        //store product details
+            'name' => 'required',
+            'email' => 'unique:customers',
+            'phone' => 'unique:customers'
+        ]);
 
-        $product = new Product($request->all());
-        $product->save();
-        return redirect(route('product.index'))->with('status', 'Product successfully added');
-
+        $customer = new Customer($request->all());
+        $customer->save();
+        return back()->with('status', 'Customer added successfully');
     }
 
     /**
@@ -59,6 +60,9 @@ class ProductController extends Controller
     public function show($id)
     {
         //
+        $customer =  Customer::find($id);
+        return view('customer.show', compact('customer'));
+
     }
 
     /**
@@ -73,7 +77,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the customer's details in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -81,11 +85,18 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //update product information
-        $product = Product::find($id);
-        $product->update($request->all());
-        $product->save();
-        return back()->with('status', "Product updated");
+        //
+        Validator::make($request->all(), [
+            'email' => [
+                'required',
+                Rule::unique('customers')->ignore($id),
+            ],
+
+        ]);
+
+        $customer = Customer::find($id);
+        $customer->update($request->all());
+        return back()->with('status', 'Changes saved!');
     }
 
     /**
@@ -96,18 +107,6 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //delete product
-        $product = Product::find($id);
-        $product->delete();
-        return back()->with('status', "Product removed from store");
-
-    }
-
-    public function search(Request $request){
-      $products = Product::where('name', 'LIKE', '%'.$request->phrase.'%')->get();
-      //$products = Product::all();
-
-      return json_encode($products);
-
+        //
     }
 }

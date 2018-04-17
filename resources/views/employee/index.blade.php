@@ -54,7 +54,7 @@
                                     </div>
                                     <p class="description text-center">
                                        <span class="badge badge-success"> Employee</span>
-                                        <br> Joined on the {{date('d M, Y', strtotime($employee->date_employed))}}
+                                        <br> Joined on {{date('d M, Y', strtotime($employee->date_employed))}}
                                       
                                     </p>
                                 </div>

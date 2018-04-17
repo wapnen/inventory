@@ -20,8 +20,11 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function(){
 	Route::resource('/employee', 'EmployeeController');
 	Route::get('/home', 'HomeController@index')->name('home');
+
+
 	Route::resource('/product', 'ProductController');
-	
+	Route::resource('/customer', 'CustomerController');
+  Route::resource('/cart', 'CartController');
 });
 
 //get all lgas for selected state

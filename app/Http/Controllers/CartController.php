@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Cart;
 use App\Product;
 
-class ProductController extends Controller
+class CartController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +15,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //show all products in the store
-        $products = Product::where('quantity', '>' , 1)->get();
-        return view('product.index', compact('products'));
+        //r
+        return view('cart');
     }
 
     /**
@@ -26,8 +26,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //show add product form
-        return view('product.create');
+        //
     }
 
     /**
@@ -38,15 +37,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //validate request
-        $this->validate($request, [
-            'quantity' => 'required|numeric',
-            'price' => 'required|numeric']);
-        //store product details
+        //
+        dd($request->all());
+        $product = Product::find($request->product_id);
+        Cart::add($product, $request->quantity);
 
-        $product = new Product($request->all());
-        $product->save();
-        return redirect(route('product.index'))->with('status', 'Product successfully added');
+        return back()->with('Item added to cart');
 
     }
 
@@ -81,11 +77,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //update product information
-        $product = Product::find($id);
-        $product->update($request->all());
-        $product->save();
-        return back()->with('status', "Product updated");
+        //
     }
 
     /**
@@ -96,18 +88,6 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //delete product
-        $product = Product::find($id);
-        $product->delete();
-        return back()->with('status', "Product removed from store");
-
-    }
-
-    public function search(Request $request){
-      $products = Product::where('name', 'LIKE', '%'.$request->phrase.'%')->get();
-      //$products = Product::all();
-
-      return json_encode($products);
-
+        //
     }
 }

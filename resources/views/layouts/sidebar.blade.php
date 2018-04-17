@@ -5,12 +5,12 @@
                     </a>
                 </div>
                 <ul class="nav">
-                    <li class="nav-item @if($selected == 'dashboard') active @endif">
+                   <!--  <li class="nav-item @if($selected == 'dashboard') active @endif">
                         <a class="nav-link" href="/home">
                             <i class="nc-icon nc-chart-pie-35"></i>
                             <p>Dashboard</p>
                         </a>
-                    </li>
+                    </li> -->
                     @if(Auth::user()->role == "Administrator")
                     <li class="@if($selected == 'employee') active @endif">
                         <a class="nav-link" href="{{route('employee.index')}}">
@@ -19,6 +19,12 @@
                         </a>
                     </li>
                     @endif
+                    <li class="@if($selected == 'cart') active @endif">
+                        <a class="nav-link" href="{{url('/cart')}}">
+                            <i class="nc-icon nc-credit-card"></i>
+                            <p>Sell</p>
+                        </a>
+                    </li>
                     <li class="@if($selected == 'product') active @endif">
                         <a class="nav-link" href="{{route('product.index')}}">
                             <i class="nc-icon nc-credit-card"></i>
@@ -26,7 +32,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="{{route('customer.index')}}">
                             <i class="nc-icon nc-paper-2"></i>
                             <p>Customers</p>
                         </a>
@@ -37,7 +43,7 @@
                             <p>Complaints</p>
                         </a>
                     </li>
-                  
+
                     <li>
                         <a class="nav-link" href="">
                             <i class="nc-icon nc-bell-55"></i>
