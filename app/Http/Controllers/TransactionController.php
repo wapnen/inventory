@@ -23,18 +23,26 @@ class TransactionController extends Controller
       $transaction->save();
 
       $sale = $this->store_sale($transaction);
-      return redirect(url('/sale/confirm'))->with('Status', 'Successful');
+      return redirect(url('/transaction/confirm', $transaction->id))->with('Status', 'Successful');
     }
 
     public function store_sale(Transaction $transaction){
-      foreach(Cart::content as $cartitem){
+      foreach(Cart::content() as $cartitem){
         $sale = new Sale();
-        $sale->customer_id = $sale->customer_id;
-        $sale->product_id = $sale->id;
+        $sale->transaction_id = $transaction->id;
+        $sale->product_id = $cartitem->id;
         $sale->quantity = $cartitem->qty;
         $total = $cartitem->price * $cartitem->qty;
         $sale->total = $total;
         $sale->save();
       }
+    }
+
+    public function confirm_sale($transaction){
+
+      $transaction = Transaction::find($transaction);
+      $sales = Sale::where('transaction_id', $transaction->id)->get();
+      return view('confirm', compact('transaction', 'sales'));
+
     }
 }

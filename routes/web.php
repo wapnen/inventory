@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('/product', 'ProductController');
 	Route::resource('/customer', 'CustomerController');
   Route::resource('/cart', 'CartController');
+  Route::get('/transaction/confirm/{id}', 'TransactionController@confirm_sale');
   Route::post('/transaction/customer', 'TransactionController@checkout_customer');
   Route::post('/transaction/guest', 'TransactionController@checkout_guest');
 });
