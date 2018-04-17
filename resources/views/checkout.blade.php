@@ -30,31 +30,54 @@
 
                         <div class="col-md-12">
                           <div class="card">
+                            <div class="card-header"><h4>Checkout | Select customer</h4>
+                              <hr>
+                            </div>
                             <div class="card-body">
-                                <form method="post" action="{{route('cart.store')}}" class="inline-form">
-                                  @csrf
-                              <div class="row">
-                                    <div class="col-md-9">
-                                      <input id = "search" type="text" name="search"  class=" form-control" placeholder="Search for product" /required>
-                                      <input type="hidden" name="product_id" id="product_id" />
-                                    </div>
-                                    <div class="col-md-1">
-                                      <input type="number" name="quantity" value="1" class="form-control" /required>
-                                    </div>
-                                    <div class="col-md-2 text-center">
-                                      <button type = "submit" class="btn btn-info btn-fill " id="add-to-cart" disabled>Add to cart</button>
+                              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Returning customer</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">New customer</a>
+                                </li>
+                              </ul>
+                              <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                  <form class="form-inline" method="post" action = "{{url('/transaction/customer')}}" >
+                                    @csrf
+                                    <div class="row">
+
+                                          <div class="col-md-9">
+
+                                            <select class="form-control" name="customer" id="customer" required>
+                                              <option>--Select customer--</option>
+                                              @foreach(App\Customer::all() as $customer)
+                                                <option value="{{$customer->id}}">{{$customer->name}} <span> {{$customer->phone}}</span></option>
+                                              @endforeach
+                                            </select>
+                                          </div>
+                                          <div class="col-md-3 form-group">
+                                            <button class="btn btn-success btn-sm btn-fill">Confirm sale</button>
+                                          </div>
 
                                     </div>
+
+
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+
                               </div>
 
-                            </form>
+
                             </div>
                           </div>
                         </div>
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Cart | N{{Cart::total()}}</h4>
+                                    <h4 class="card-title">Summary</h4>
                                 </div>
                                 <div class="card-body table-responsive">
                                     <table class="table table-striped">
@@ -64,7 +87,6 @@
                                             <th>Unit price</th>
                                             <th>Quantity</th>
                                             <th>Total</th>
-                                            <th>Action</th>
                                         </thead>
                                         <tbody>
                                             <?php $i = 1; ?>
@@ -73,20 +95,14 @@
                                                 <td>{{$i}}</td>
                                                 <td>{{$product->name}} </td>
                                                 <td>N{{number_format($product->price, 2)}}</td>
-                                                <td><input type="number" name="quantity" value="{{$product->qty}}" id = "{{$product->rowId}}" class="quantity form-control" /required></td>
+                                                <td>{{$product->qty}}</td>
                                                 <td>N{{number_format($product->qty * $product->price, 2)}}</td>
-                                                <td>
-                                                  <form id="form{{$product->rowId}}" action="{{route('cart.destroy', $product->rowId)}}" method="post">
-                                                    @csrf
-                                                    {{method_field('delete')}}
-                                                    <button class="btn btn-danger btn-sm btn-fill delete" id="{{$product->rowId}}" ><i class="fa fa-remove"></i></button>
-                                                  </form>
-                                                </td>
+
                                               </tr>
                                                 <?php $i++; ?>
                                             @endforeach
                                             <tr>
-                                              <td></td>
+
                                               <td></td>
                                               <td></td>
                                               <td></td>
@@ -100,7 +116,7 @@
                                 <div class="card-footer">
                                   <hr>
                                     <a class="btn btn-warning btn-fill btn-sm" href="{{route('cart.index')}}"><i class="fa fa-refresh"></i>Refresh cart</a>
-                                    <a class="btn btn-success btn-fill btn-sm" href="/checkout"><i class="fa fa-check"></i>Checkout</a>
+                                    <a class="btn btn-success btn-fill btn-sm" href="{{route('product.create')}}"><i class="fa fa-check"></i>Checkout</a>
                                 </div>
                             </div>
 
@@ -120,35 +136,7 @@
 <!--   Core JS Files   -->
 @include('layouts.scripts')
 <script src="/assets/js/autocomplete/jquery.easy-autocomplete.min.js"></script>
-@if(session('errors'))
 <script type="text/javascript">
-
-    $('#edit').modal();
-</script>
-@endif
-<script type="text/javascript">
-
- //delete a product
- // confirm delete form
-$('.delete').click(function(e){
-    //alert($(this).attr('id'));
-    e.preventDefault(e);
-    var form = $(this).attr('id');
-
-    swal({
-      title: "Are you sure?",
-      text: "You will not be able to undo this!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    })
-    .then((willDelete) => {
-      if (willDelete) {
-        $("#form"+form).submit();
-
-      }
-    });
-});
 
 
 //search for a product
@@ -205,29 +193,6 @@ $('#search').keyup(function(){
 });
 
 
-//change quantity of item in Cart
-$('.quantity').change(function(){
-    var qty = $(this).val();
-    var id = $(this).attr('id');
-
-    $.ajax({
-      url : "/cart/update/"+id+"/"+qty,
-      type : "get",
-      success : function(data){
-        $.notify({
-            icon: "nc-icon nc-app",
-            message: "Product quantity updated, refresh cart to view changes"
-
-        }, {
-            type: type['green'],
-            timer: 8000,
-            placement: {
-                from: 'top',
-                align: 'right'
-            }
-        });
-      }
-    });
 });
 </script>
 </html>

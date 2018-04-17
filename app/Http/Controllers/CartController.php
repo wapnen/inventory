@@ -38,7 +38,7 @@ class CartController extends Controller
     public function store(Request $request)
     {
         //
-        dd($request->all());
+
         $product = Product::find($request->product_id);
         Cart::add($product, $request->quantity);
 
@@ -89,5 +89,16 @@ class CartController extends Controller
     public function destroy($id)
     {
         //
+        Cart::remove($id);
+        return back()->with('status', 'Item deleted from cart');
+    }
+
+    public function update_qty($rowId , $qty){
+      Cart::update($rowId, $qty);
+      return response()->json(['Status' => 'success']);
+    }
+
+    public function checkout(){
+      return view('checkout');
     }
 }

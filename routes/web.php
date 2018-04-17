@@ -21,10 +21,13 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('/employee', 'EmployeeController');
 	Route::get('/home', 'HomeController@index')->name('home');
 
-
+  Route::get('/cart/update/{rowId}/{qty}', 'CartController@update_qty');
+  Route::get('/checkout', 'CartController@checkout');
 	Route::resource('/product', 'ProductController');
 	Route::resource('/customer', 'CustomerController');
   Route::resource('/cart', 'CartController');
+  Route::post('/transaction/customer', 'TransactionController@checkout_customer');
+  Route::post('/transaction/guest', 'TransactionController@checkout_guest');
 });
 
 //get all lgas for selected state
