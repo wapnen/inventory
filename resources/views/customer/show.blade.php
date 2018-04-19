@@ -125,14 +125,26 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <th>S\No</th>
-                                            <th>Transaction ID</th>
                                             <th>Total</th>
-                                            <th>Payment method</th>
                                             <th>Date</th>
+                                            <th>Recorded by</th>
                                             <th>Action</th>
                                         </thead>
                                         <tbody>
+                                          <?php $i = 1; ?>
+                                          @foreach($transactions as $transaction)
+                                            <tr>
+                                              <td>{{$i}}</td>
+                                              <td>N{{number_format($transaction->total, 2)}}</td>
+                                              <td>{{date('d M , Y', strtotime($transaction->created_at))}}</td>
+                                              <td>{{App\User::find($transaction->user_id)->lastname}} {{App\User::find($transaction->user_id)->firstname}}</td>
+                                              <td>
+                                                <a class="btn btn-sm btn-info"  href="/transaction/invoice/{{$transaction->id}}">Print</a>
 
+                                              </td>
+                                            </tr>
+                                            <?php $i++; ?>
+                                          @endforeach
                                         </tbody>
                                     </table>
 

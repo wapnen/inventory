@@ -28,52 +28,30 @@
                 <div class="container-fluid">
                     <div class="row">
 
-                        <div class="col-md-12">
-                          <div class="card">
-                            <div class="card-header"><h4>Checkout | Select customer</h4>
-                              <hr>
+                      <div class="col-md-12">
+                        <div class="card">
+                          <div class="card-header">
+                            <h4 class="card-title">Select customer</h4>
+                          </div>
+                          <div class="card-body">
+                              <form method="post" action="/transaction/customer" class="inline-form">
+                                @csrf
+                            <div class="row">
+                                  <div class="col-md-10">
+                                    <input id = "search" type="text" name="search"  class=" form-control" placeholder="Search for customer" /required>
+                                    <input type="hidden" name="customer_id" id="customer_id" />
+                                  </div>
+
+                                  <div class="col-md-2 text-center">
+                                    <button type = "submit" class="btn btn-info btn-fill " id="confirm-sale" disabled>Confirm sale</button>
+
+                                  </div>
                             </div>
-                            <div class="card-body">
-                              <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                <li class="nav-item">
-                                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Returning customer</a>
-                                </li>
-                                <li class="nav-item">
-                                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">New customer</a>
-                                </li>
-                              </ul>
-                              <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                  <form class="form-inline" method="post" action = "{{url('/transaction/customer')}}" >
-                                    @csrf
-                                    <div class="row">
 
-                                          <div class="col-md-9">
-
-                                            <select class="form-control" name="customer" id="customer" required>
-                                              <option>--Select customer--</option>
-                                              @foreach(App\Customer::all() as $customer)
-                                                <option value="{{$customer->id}}">{{$customer->name}} <span>(Tel- {{$customer->phone}} )</span></option>
-                                              @endforeach
-                                            </select>
-                                          </div>
-                                          <div class="col-md-3 form-group">
-                                            <button class="btn btn-success btn-sm btn-fill">Confirm sale</button>
-                                          </div>
-
-                                    </div>
-
-
-                                    </form>
-                                </div>
-                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-
-                              </div>
-
-
-                            </div>
+                          </form>
                           </div>
                         </div>
+                      </div>
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
@@ -107,17 +85,13 @@
                                               <td></td>
                                               <td></td>
                                               <th>Total</th>
-                                              <td>N{{Cart::total()}}</td>
+                                              <td>N{{Cart::subtotal()}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
 
                                 </div>
-                                <div class="card-footer">
-                                  <hr>
-                                    <a class="btn btn-warning btn-fill btn-sm" href="{{route('cart.index')}}"><i class="fa fa-refresh"></i>Refresh cart</a>
-                                    <a class="btn btn-success btn-fill btn-sm" href="{{route('product.create')}}"><i class="fa fa-check"></i>Checkout</a>
-                                </div>
+
                             </div>
 
                         </div>
@@ -143,7 +117,7 @@
 var options = {
 
   url: function(phrase) {
-    return "/api/product/search";
+    return "/api/customer/search";
   },
 
   getValue: function(element) {
@@ -165,21 +139,21 @@ var options = {
   template: {
 		type: "description",
 		fields: {
-			description: "price"
+			description: "phone"
 		}
 	},
   list: {
     onClickEvent: function(){
 
-      $('#add-to-cart').prop('disabled', false);
+      $('#confirm-sale').prop('disabled', false);
       var value = $("#search").getSelectedItemData().id;
-			$("#product_id").val(value).trigger("change");
+			$("#customer_id").val(value).trigger("change");
     },
     onChooseEvent: function(){
 
-      $('#add-to-cart').prop('disabled', false);
+      $('#confirm-sale').prop('disabled', false);
       var value = $("#search").getSelectedItemData().id;
-			$("#product_id").val(value).trigger("change");
+			$("#customer_id").val(value).trigger("change");
     }
   }
 
@@ -189,10 +163,9 @@ $("#search").easyAutocomplete(options);
 
 
 $('#search').keyup(function(){
-    $('#add-to-cart').prop('disabled', true);
+    $('#confirm-sale').prop('disabled', true);
 });
 
 
-});
 </script>
 </html>

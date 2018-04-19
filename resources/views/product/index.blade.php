@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         @else
-                        <div class="col-md-12">
+                        <!-- <div class="col-md-12">
                           <div class="card">
                             <div class="card-body">
                                 <form method="" action="" class="inline-form">
@@ -49,7 +49,7 @@
                                       <input id = "search" type="text" name="search" class="form-control" placeholder="Search for product" /required>
                                     </div>
                                     <div class="col-md-3 text-center">
-                                      <button submit class="btn btn-info btn-fill ">Add to cart</button>
+
                                       <button class="btn btn-warning btn-fill ">View</button>
                                     </div>
                               </div>
@@ -57,7 +57,7 @@
                             </form>
                             </div>
                           </div>
-                        </div>
+                        </div> -->
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
@@ -76,6 +76,7 @@
                                         <tbody>
                                             <?php $i = 1; ?>
                                             @foreach($products as $product)
+                                            <tr>
                                                 <td>{{$i}}</td>
                                                 <td>{{$product->name}} </td>
                                                 <td>{{$product->type}}</td>
@@ -104,12 +105,13 @@
                                                             {{method_field('delete')}}
                                                             <button class="dropdown-item delete" id="{{$product->id}}" >Delete product</button>
                                                           </form>
-                                                          <a class="dropdown-item" href="#">Add to cart</a>
+                                                          
                                                         </div>
                                                       </div>
                                                     </div>
                                                 </td>
                                                 <?php $i++; ?>
+                                              </tr>
                                             @endforeach
                                         </tbody>
                                     </table>

@@ -46,8 +46,9 @@
                                         <tbody>
                                             <?php $i = 1; ?>
                                             @foreach($customers as $customer)
+                                              <tr>
                                                 <td>{{$i}}</td>
-                                                <td>{{$customer->name}} </td>
+                                                <td> <a href="{{route('customer.show', $customer->id)}}"> {{$customer->name}} </a> </td>
                                                 <td>{{$customer->email}}</td>
                                                 <td>{{$customer->phone}}</td>
 
@@ -58,7 +59,7 @@
                                                           Options
                                                         </button>
                                                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                          <a class="dropdown-item"  href="{{route('customer.show', $customer->id)}}"    >Edit customer</a>
+                                                          <a class="dropdown-item"  href="{{route('customer.show', $customer->id)}}"    >View customer</a>
 
                                                           <form id="form{{$customer->id}}" action="{{route('customer.destroy', $customer->id)}}" method="post">
                                                             @csrf
@@ -70,6 +71,7 @@
                                                       </div>
                                                     </div>
                                                 </td>
+                                              </tr>
                                                 <?php $i++; ?>
                                             @endforeach
                                         </tbody>

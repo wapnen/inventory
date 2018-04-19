@@ -32,9 +32,13 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Transaction summary</h4>
+                                    <h4 class="card-title">Transaction summary | {{App\Customer::find($transaction->customer_id)->name}}</h4>
                                 </div>
                                 <div class="card-body table-responsive">
+                                  <div class="row">
+
+                                  </div>
+
                                     <table class="table table-striped">
                                         <thead>
                                             <th>S\No</th>
@@ -62,7 +66,7 @@
                                               <td></td>
                                               <td></td>
                                               <th>Total</th>
-                                              <td>N{{Cart::total()}}</td>
+                                              <td>N{{number_format($transaction->total, 2)}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -70,7 +74,7 @@
                                 </div>
                                 <div class="card-footer">
                                   <hr>
-                                      <a class="btn btn-success btn-fill btn-sm" href="{{route('product.create')}}"><i class="fa fa-check"></i>Download receipt</a>
+                                      <a class="btn btn-success btn-fill btn-sm" href="/transaction/invoice/{{$transaction->id}}"><i class="fa fa-check"></i>Download receipt</a>
                                 </div>
                             </div>
 

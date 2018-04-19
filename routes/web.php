@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth'], function(){
   Route::get('/transaction/confirm/{id}', 'TransactionController@confirm_sale');
   Route::post('/transaction/customer', 'TransactionController@checkout_customer');
   Route::post('/transaction/guest', 'TransactionController@checkout_guest');
+  Route::get('/transaction/invoice/{id}', 'TransactionController@invoice');
 });
 
 //get all lgas for selected state

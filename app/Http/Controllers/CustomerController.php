@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use App\Customer;
 use Illuminate\Validation\Rule;
 use Validator;
-
+use App\Transaction;
 class CustomerController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the customers.
      *
      * @return \Illuminate\Http\Response
      */
@@ -32,27 +32,28 @@ class CustomerController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created customer in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        //validate the request
         $this->validate($request, [
             'name' => 'required',
             'email' => 'unique:customers',
             'phone' => 'unique:customers'
         ]);
 
+        //store the customer
         $customer = new Customer($request->all());
         $customer->save();
         return back()->with('status', 'Customer added successfully');
     }
 
     /**
-     * Display the specified resource.
+     * Display the customer's details
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -61,7 +62,8 @@ class CustomerController extends Controller
     {
         //
         $customer =  Customer::find($id);
-        return view('customer.show', compact('customer'));
+        $transactions = Transaction::where('customer_id', $customer->id)->get();
+        return view('customer.show', compact('customer', 'transactions'));
 
     }
 
@@ -100,7 +102,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the customer from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -108,5 +110,15 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         //
+        $customer = Customer::find($id);
+        $customer->delete();
+        return back()->with('status', 'Customer removed');
+    }
+
+    //search for a customer
+    public function search(Request $request){
+      $customers = Customer::where('name', 'LIKE', '%'.$request->phrase.'%')->orWhere('phone', 'LIKE', '%'.$request->phrase.'%')->get();
+
+      return json_encode($customers);
     }
 }

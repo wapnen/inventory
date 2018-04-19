@@ -34,7 +34,7 @@
                                 @endif
                             </div>
                             <div class="col-md-12">
-                                <label for="phone" class="col-form-label text-md-right">{{ __("Customer's phone (optional)") }}</label>
+                                <label for="phone" class="col-form-label text-md-right">{{ __("Customer's phone ") }}</label>
                                 <input id="phone" type="text" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="phone" value="{{ old('phone') }}" required autofocus>
 
                                 @if ($errors->has('phone'))

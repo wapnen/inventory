@@ -54,7 +54,7 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Cart | N{{Cart::total()}}</h4>
+                                    <h4 class="card-title">Cart | N{{Cart::subtotal()}}</h4>
                                 </div>
                                 <div class="card-body table-responsive">
                                     <table class="table table-striped">
@@ -91,7 +91,7 @@
                                               <td></td>
                                               <td></td>
                                               <th>Total</th>
-                                              <td>N{{Cart::total()}}</td>
+                                              <td>N{{Cart::subtotal()}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -99,8 +99,10 @@
                                 </div>
                                 <div class="card-footer">
                                   <hr>
+                                  @if(count(Cart::content()) > 0)
                                     <a class="btn btn-warning btn-fill btn-sm" href="{{route('cart.index')}}"><i class="fa fa-refresh"></i>Refresh cart</a>
                                     <a class="btn btn-success btn-fill btn-sm" href="/checkout"><i class="fa fa-check"></i>Checkout</a>
+                                  @endif
                                 </div>
                             </div>
 
