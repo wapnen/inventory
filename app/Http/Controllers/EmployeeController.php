@@ -56,7 +56,7 @@ class EmployeeController extends Controller
         $password = uniqid();
         $employee->password = bcrypt($password);
         $employee->save();
-        
+
         //Notify employee
         $this->notify_employee($employee, $password);
         return redirect(route('employee.index'))->with('status', 'Employee created');
@@ -70,7 +70,7 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        //show a single employee's details 
+        //show a single employee's details
         $employee = User::find($id);
         return view('employee.show', compact('employee'));
     }
@@ -124,10 +124,10 @@ class EmployeeController extends Controller
         return redirect(route('employee.index'))->with('status', 'User deleted!');
     }
 
-    //send email to new employee 
+    //send email to new employee
     public function notify_employee(User $user, $password){
-    
+
         Mail::to($user)->send(new CreateEmployee($user, $password));
-        
+
     }
 }

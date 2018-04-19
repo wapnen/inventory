@@ -39,25 +39,25 @@
                             </div>
                         </div>
                         @else
-                        <!-- <div class="col-md-12">
+                        <div class="col-md-12">
                           <div class="card">
                             <div class="card-body">
                                 <form method="" action="" class="inline-form">
                               <div class="row">
 
-                                    <div class="col-md-9">
+                                    <div class="col-md-10">
                                       <input id = "search" type="text" name="search" class="form-control" placeholder="Search for product" /required>
                                     </div>
-                                    <div class="col-md-3 text-center">
+                                    <div class="col-md-2 text-center">
 
-                                      <button class="btn btn-warning btn-fill ">View</button>
+                                      <a href="" id="view-product" class="btn btn-warning btn-fill">View</a>
                                     </div>
                               </div>
 
                             </form>
                             </div>
                           </div>
-                        </div> -->
+                        </div>
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
@@ -105,7 +105,7 @@
                                                             {{method_field('delete')}}
                                                             <button class="dropdown-item delete" id="{{$product->id}}" >Delete product</button>
                                                           </form>
-                                                          
+
                                                         </div>
                                                       </div>
                                                     </div>
@@ -216,6 +216,20 @@ var options = {
     data.phrase = $("#search").val();
     return data;
   },
+  list: {
+    onClickEvent: function(){
+
+      $('#view-product').prop('disabled', false);
+      var value = $("#search").getSelectedItemData().id;
+			$("#view-product").attr('href', '/product/'+value);
+    },
+    onChooseEvent: function(){
+
+      $('#view-product').prop('disabled', false);
+      var value = $("#search").getSelectedItemData().id;
+			$("#view-product").attr('href', '/product/'+value);
+    }
+  }
 
 };
 

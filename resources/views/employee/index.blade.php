@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="author">
-                                        <a href="#">
+                                        <a href="{{route('employee.show', $employee->id)}}">
                                             <img class="avatar border-gray" src="/assets/img/faces/avatar.png" alt="...">
                                             <h5 class="title">{{$employee->firstname}} {{$employee->lastname}}</h5>
                                         </a>
@@ -55,10 +55,10 @@
                                     <p class="description text-center">
                                        <span class="badge badge-success"> Employee</span>
                                         <br> Joined on {{date('d M, Y', strtotime($employee->date_employed))}}
-                                      
+
                                     </p>
                                 </div>
-                               
+
                             </div>
                         </div>
                        @endforeach
@@ -73,7 +73,7 @@
             </footer>
         </div>
     </div>
-    
+
 </body>
 <!--   Core JS Files   -->
 @include('layouts.scripts')
