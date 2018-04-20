@@ -22,198 +22,195 @@
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-4">
+                      <div class="col-md-12">
+                          <div class="card ">
+                              <div class="card-header ">
+                                  <h4 class="card-title">Sales report</h4>
+                                  <p class="card-category">Generate sales report</p>
+                              </div>
+                              <div class="card-body ">
+                                <form class="" method="post" action ="/sales/report">
+                                  @csrf
+                                  <div class="row">
+                                    <div class="col-md-5 form-group">
+                                        <label for="from">From (date)</label>
+                                        <input type="date" name="from" class="form-control {{ $errors->has('from') ? ' is-invalid' : '' }}" value="{{ old('from') }}" required/>
+                                        @if ($errors->has('from'))
+                                            <span class="invalid-feedback">
+                                                <strong>{{ $errors->first('from') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-5 form-group">
+                                        <label for="from">To (date)</label>
+                                        <input type="date" name="to" class="form-control {{ $errors->has('to') ? ' is-invalid' : '' }}" value="{{ old('to') }}" required/>
+                                        @if ($errors->has('to'))
+                                            <span class="invalid-feedback">
+                                                <strong>{{ $errors->first('to') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-2 form-group">
+                                      <label>Get report</label>
+                                      <button class="btn btn-warning form-control" type="submit">Download</button>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                          </div>
+                      </div>
+                        <div class="col-md-12">
                             <div class="card ">
                                 <div class="card-header ">
-                                    <h4 class="card-title">Statistics</h4>
-                                    <p class="card-category">Last Campaign Performance</p>
+                                    <h4 class="card-title">Weekly sales</h4>
+                                    <p class="card-category">Amount of sales this week</p>
                                 </div>
                                 <div class="card-body ">
-                                    <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
+                                    <div  class="">{!! $chart->container() !!}</div>
                                 </div>
                                 <div class="card-footer ">
-                                    <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Open
-                                        <i class="fa fa-circle text-danger"></i> Bounce
-                                        <i class="fa fa-circle text-warning"></i> Unsubscribe
-                                    </div>
+
                                     <hr>
                                     <div class="stats">
-                                        <i class="fa fa-clock-o"></i> Campaign sent 2 days ago
+                                        <i class="fa fa-history"></i> Updated just now
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-8">
-                            <div class="card ">
-                                <div class="card-header ">
-                                    <h4 class="card-title">Transactions</h4>
-                                    <p class="card-category">24 Hours performance</p>
-                                </div>
-                                <div class="card-body ">
-                                    <div id="chartHours" class="ct-chart"></div>
-                                </div>
-                                <div class="card-footer ">
-                                    <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Open
-                                        <i class="fa fa-circle text-danger"></i> Click
-                                        <i class="fa fa-circle text-warning"></i> Click Second Time
-                                    </div>
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-history"></i> Updated 3 minutes ago
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="card ">
-                                <div class="card-header ">
-                                    <h4 class="card-title">2017 Sales</h4>
-                                    <p class="card-category">All products including Taxes</p>
-                                </div>
-                                <div class="card-body ">
-                                    <div id="chartActivity" class="ct-chart"></div>
-                                </div>
-                                <div class="card-footer ">
-                                    <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Tesla Model S
-                                        <i class="fa fa-circle text-danger"></i> BMW 5 Series
-                                    </div>
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-check"></i> Data information certified
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
+                      <div class="col-md-6">
+                          <div class="card  card-tasks">
+                              <div class="card-header ">
+                                  <h4 class="card-title">Grossing products </h4>
+                                  <p class="card-category">Most purchased items</p>
+                              </div>
+                              <div class="card-body ">
+                                  <div class="table-full-width">
+                                      <table class="table">
+                                          <thead>
+                                            <tr>
+                                              <th>Rank</th>
+                                              <th>Product</th>
+                                              <th>Quantity sold</th>
+                                              <th>Action</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <?php $i = 1; ?>
+                                            @foreach($top_products as $product)
+                                              <tr>
+                                                  <td>
+                                                      {{$i}}
+                                                  </td>
+                                                  <td>{{$product->name}}</td>
+                                                  <td><span class="badge badge-warning">{{$product->quantity_sold}} </span> sale(s) </td>
+                                                  <td class="td-actions text-right">
+                                                      <a href="{{route('product.show', $product->id)}}"   class="btn btn-primary btn-sm">View product
+                                                      </a>
+
+                                                  </td>
+                                              </tr>
+                                              <?php $i++; ?>
+                                              @endforeach
+
+                                          </tbody>
+                                      </table>
+                                  </div>
+                              </div>
+                              <div class="card-footer ">
+                                  <hr>
+                                  <div class="stats">
+                                      <i class="now-ui-icons loader_refresh spin"></i> Updated just now
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="card  card-tasks">
+                              <div class="card-header ">
+                                  <h4 class="card-title">Poor performing products </h4>
+                                  <p class="card-category">Least purchased items</p>
+                              </div>
+                              <div class="card-body ">
+                                  <div class="table-full-width">
+                                      <table class="table">
+                                          <thead>
+                                            <tr>
+                                              <th>Rank</th>
+                                              <th>Product</th>
+                                              <th>Quantity sold</th>
+                                              <th>Action</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <?php $i = 1; ?>
+                                            @foreach($least_products as $product)
+                                              <tr>
+                                                  <td>
+                                                      {{$i}}
+                                                  </td>
+                                                  <td>{{$product->name}}</td>
+                                                  <td><span class="badge badge-warning">{{$product->quantity_sold}} </span> sale(s) </td>
+                                                  <td class="td-actions text-right">
+                                                      <a href="{{route('product.show', $product->id)}}"   class="btn btn-primary btn-sm">View product
+                                                      </a>
+
+                                                  </td>
+                                              </tr>
+                                              <?php $i++; ?>
+                                              @endforeach
+
+                                          </tbody>
+                                      </table>
+                                  </div>
+                              </div>
+                              <div class="card-footer ">
+                                  <hr>
+                                  <div class="stats">
+                                      <i class="now-ui-icons loader_refresh spin"></i> Updated just now
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                        <div class="col-md-12">
                             <div class="card  card-tasks">
                                 <div class="card-header ">
-                                    <h4 class="card-title">Tasks</h4>
-                                    <p class="card-category">Backend development</p>
+                                    <h4 class="card-title">Top customers </h4>
+                                    <p class="card-category">Most frequent customers in the store</p>
                                 </div>
                                 <div class="card-body ">
                                     <div class="table-full-width">
                                         <table class="table">
+                                          <thead>
+                                            <tr>
+                                              <th>Rank</th>
+                                              <th>Customer</th>
+                                              <th>No of transactions</th>
+                                              <th>Started shopping</th>
+                                              <th>Action</th>
+                                            </tr>
+                                          </thead>
                                             <tbody>
+                                              <?php $i = 1; ?>
+                                              @foreach($frequent_customers as $customer)
                                                 <tr>
                                                     <td>
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox" value="">
-                                                                <span class="form-check-sign"></span>
-                                                            </label>
-                                                        </div>
+                                                        {{$i}}
                                                     </td>
-                                                    <td>Sign contract for "What are conference organizers afraid of?"</td>
+                                                    <td>{{$customer->name}}</td>
+                                                    <td><span class="badge badge-danger">{{$customer->no_of_transactions}} </span> transaction(s) </td>
+                                                    <td>{{date('d M, Y', strtotime($customer->created_at))}}</td>
                                                     <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-link">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-link">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
+                                                        <a href="{{route('customer.show', $customer->id)}}"   class="btn btn-success btn-sm">View customer
+                                                        </a>
+
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox" value="" checked>
-                                                                <span class="form-check-sign"></span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                                                    <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-link">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-link">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox" value="" checked>
-                                                                <span class="form-check-sign"></span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                                                    </td>
-                                                    <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-link">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-link">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox" checked>
-                                                                <span class="form-check-sign"></span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Create 4 Invisible User Experiences you Never Knew About</td>
-                                                    <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-link">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-link">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox" value="">
-                                                                <span class="form-check-sign"></span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Read "Following makes Medium better"</td>
-                                                    <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-link">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-link">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox" value="" disabled>
-                                                                <span class="form-check-sign"></span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Unfollow 5 enemies from twitter</td>
-                                                    <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-link">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-link">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                                                <?php $i++; ?>
+                                                @endforeach
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -221,7 +218,7 @@
                                 <div class="card-footer ">
                                     <hr>
                                     <div class="stats">
-                                        <i class="now-ui-icons loader_refresh spin"></i> Updated 3 minutes ago
+                                        <i class="now-ui-icons loader_refresh spin"></i> Updated just now
                                     </div>
                                 </div>
                             </div>
@@ -234,87 +231,11 @@
             </footer>
         </div>
     </div>
-    <!--   -->
-    <!-- <div class="fixed-plugin">
-    <div class="dropdown show-dropdown">
-        <a href="#" data-toggle="dropdown">
-            <i class="fa fa-cog fa-2x"> </i>
-        </a>
-
-        <ul class="dropdown-menu">
-            <li class="header-title"> Sidebar Style</li>
-            <li class="adjustments-line">
-                <a href="javascript:void(0)" class="switch-trigger">
-                    <p>Background Image</p>
-                    <label class="switch">
-                        <input type="checkbox" data-toggle="switch" checked="" data-on-color="primary" data-off-color="primary"><span class="toggle"></span>
-                    </label>
-                    <div class="clearfix"></div>
-                </a>
-            </li>
-            <li class="adjustments-line">
-                <a href="javascript:void(0)" class="switch-trigger background-color">
-                    <p>Filters</p>
-                    <div class="pull-right">
-                        <span class="badge filter badge-black" data-color="black"></span>
-                        <span class="badge filter badge-azure" data-color="azure"></span>
-                        <span class="badge filter badge-green" data-color="green"></span>
-                        <span class="badge filter badge-orange" data-color="orange"></span>
-                        <span class="badge filter badge-red" data-color="red"></span>
-                        <span class="badge filter badge-purple active" data-color="purple"></span>
-                    </div>
-                    <div class="clearfix"></div>
-                </a>
-            </li>
-            <li class="header-title">Sidebar Images</li>
-
-            <li class="active">
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="/assets/img/sidebar-1.jpg" alt="" />
-                </a>
-            </li>
-            <li>
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="/assets/img/sidebar-3.jpg" alt="" />
-                </a>
-            </li>
-            <li>
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="..//assets/img/sidebar-4.jpg" alt="" />
-                </a>
-            </li>
-            <li>
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="/assets/img/sidebar-5.jpg" alt="" />
-                </a>
-            </li>
-
-            <li class="button-container">
-                <div class="">
-                    <a href="http://www.creative-tim.com/product/light-bootstrap-dashboard" target="_blank" class="btn btn-info btn-block btn-fill">Download, it's free!</a>
-                </div>
-            </li>
-
-            <li class="header-title pro-title text-center">Want more components?</li>
-
-            <li class="button-container">
-                <div class="">
-                    <a href="http://www.creative-tim.com/product/light-bootstrap-dashboard-pro" target="_blank" class="btn btn-warning btn-block btn-fill">Get The PRO Version!</a>
-                </div>
-            </li>
-
-            <li class="header-title" id="sharrreTitle">Thank you for sharing!</li>
-
-            <li class="button-container">
-                <button id="twitter" class="btn btn-social btn-outline btn-twitter btn-round sharrre"><i class="fa fa-twitter"></i> · 256</button>
-                <button id="facebook" class="btn btn-social btn-outline btn-facebook btn-round sharrre"><i class="fa fa-facebook-square"></i> · 426</button>
-            </li>
-        </ul>
-    </div>
-</div>
- -->
 </body>
 <!--   Core JS Files   -->
 @include('layouts.scripts')
+
+<script src=//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js charset=utf-8></script>
+{!! $chart->script() !!}
 
 </html>

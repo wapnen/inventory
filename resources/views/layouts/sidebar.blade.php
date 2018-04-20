@@ -12,6 +12,12 @@
                         </a>
                     </li> -->
                     @if(Auth::user()->role == "Administrator")
+                     <li class="nav-item @if($selected == 'dashboard') active @endif">
+                         <a class="nav-link" href="/home">
+                             <i class="nc-icon nc-chart-pie-35"></i>
+                             <p>Dashboard</p>
+                         </a>
+                     </li>
                     <li class="@if($selected == 'employee') active @endif">
                         <a class="nav-link" href="{{route('employee.index')}}">
                             <i class="nc-icon nc-circle-09"></i>
@@ -31,25 +37,25 @@
                             <p>Products</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="@if($selected == 'customer') active @endif" >
                         <a class="nav-link" href="{{route('customer.index')}}">
                             <i class="nc-icon nc-paper-2"></i>
                             <p>Customers</p>
                         </a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="">
+                    <li class="@if($selected == 'complaint') active @endif" >
+                        <a class="nav-link" href="{{route('complaint.index')}}">
                             <i class="nc-icon nc-atom"></i>
                             <p>Complaints</p>
                         </a>
                     </li>
-
-                    <li>
-                        <a class="nav-link" href="">
+                    <li class="@if($selected == 'request') active @endif" >
+                        <a class="nav-link" href="{{route('productrequest.store')}}">
                             <i class="nc-icon nc-bell-55"></i>
-                            <p>Reports</p>
+                            <p>Requests</p>
                         </a>
                     </li>
+
                    <!--  <li class="nav-item active active-pro">
                         <a class="nav-link active" href="upgrade.html">
                             <i class="nc-icon nc-alien-33"></i>

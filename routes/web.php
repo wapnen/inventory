@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -26,10 +26,13 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('/product', 'ProductController');
 	Route::resource('/customer', 'CustomerController');
   Route::resource('/cart', 'CartController');
+  Route::post('/sales/report', 'TransactionController@generate_report');
   Route::get('/transaction/confirm/{id}', 'TransactionController@confirm_sale');
   Route::post('/transaction/customer', 'TransactionController@checkout_customer');
   Route::post('/transaction/guest', 'TransactionController@checkout_guest');
   Route::get('/transaction/invoice/{id}', 'TransactionController@invoice');
+  Route::resource('/complaint', 'ComplaintController');
+  Route::resource('/productrequest', 'ProductRequestController');
 });
 
 //get all lgas for selected state
