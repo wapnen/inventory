@@ -1,6 +1,6 @@
 <div class="sidebar-wrapper">
                 <div class="logo">
-                    <a href="/home" class="simple-text">
+                    <a href="@if(Auth::user()->role == 'Administrator')/home  @endif" class="simple-text">
                        Store
                     </a>
                 </div>

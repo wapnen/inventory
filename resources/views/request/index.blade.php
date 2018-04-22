@@ -22,7 +22,7 @@
         </div>
         <div class="main-panel">
             <!-- Navbar -->
-            @include('layouts.nav', ['title' => 'Product requests'])
+            @include('layouts.nav', ['title' => 'Product\Service requests'])
             <!-- End Navbar -->
             <div class="content">
                 <div class="container-fluid">
@@ -52,6 +52,7 @@
                                             <th>Requested product</th>
                                             <th>Customer</th>
                                             <th>Date</th>
+                                            <th>Action</th>
                                         </thead>
                                         <tbody>
                                             <?php $i = 1; ?>
@@ -61,7 +62,13 @@
                                                 <td>{{$request->product}} </td>
                                                 <td>{{App\Customer::find($request->customer_id)->name}}</td>
                                                 <td>{{date('d M, Y'), strtotime($request->created_at)}}</td>
-
+                                                <td>
+                                                  <form method="post" action="{{route('productrequest.destroy', $request->id)}}" id="form{{$request->id}}">
+                                                    @csrf
+                                                    {{method_field('PATCH')}}
+                                                    <button class="delete btn btn-sm btn-danger btn-fill" id="{{$request->id}}">Delete</button>
+                                                  </form>
+                                                </td>
 
                                                 <?php $i++; ?>
                                               </tr>
@@ -90,5 +97,29 @@
 </body>
 <!--   Core JS Files   -->
 @include('layouts.scripts')
+<script type="text/javascript">
+//delete a product
+// confirm delete form
+$('.delete').click(function(e){
+   //alert($(this).attr('id'));
+   e.preventDefault(e);
+   var form = $(this).attr('id');
 
+   swal({
+     title: "Are you sure?",
+     text: "You will not be able to undo this!",
+     icon: "warning",
+     buttons: true,
+     dangerMode: true,
+   })
+   .then((willDelete) => {
+     if (willDelete) {
+       $("#form"+form).submit();
+       // swal("Done!", {
+       //   icon: "success",
+       // });
+     }
+   });
+});
+</script>
 </html>

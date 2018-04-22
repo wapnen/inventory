@@ -46,11 +46,16 @@ class HomeController extends Controller
 
        //render the results in a line chart
        $chart = new WeeklySales();
-       $chart->dataset('Weekly sales', 'line', $request_count);
+       $chart->dataset('Weekly sales', 'line', $request_count)->options(['backgroundColor' => '#22A7F0' ]);
 
-        $frequent_customers = Customer::orderBy('no_of_transactions', 'DESC')->limit(5)->get();
+       //get top 20 customers
+        $no_of_customer = count(Customer::all());
+        $customer_percent = (20 / 100) * $no_of_customer;
+
+
+        $frequent_customers = Customer::orderBy('no_of_transactions', 'DESC')->limit(ceil($customer_percent))->get();
         $top_products = Product::orderBy('quantity_sold', 'DESC')->limit(5)->get();
-          $least_products = Product::orderBy('quantity_sold', 'ASC')->limit(5)->get();
+        $least_products = Product::orderBy('quantity_sold', 'ASC')->limit(5)->get();
         return view('home', compact('frequent_customers', 'top_products', 'least_products', 'chart'));
     }
 }

@@ -90,5 +90,8 @@ class ProductRequestController extends Controller
     public function destroy($id)
     {
         //
+        $productrequest = ProductRequest::find($id);
+        $productrequest->delete();
+        return back()->with('status', 'Request deleted');
     }
 }

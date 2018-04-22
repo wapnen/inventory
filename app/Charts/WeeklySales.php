@@ -14,6 +14,6 @@ class WeeklySales extends Chart
     public function __construct()
     {
         parent::__construct();
-        $this->labels(['Monday', 'Teusday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])->options(['height' => 10]);
+        $this->labels(['Monday', 'Teusday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])->options(['height' => 10, 'backgroundColor' => 'blue']);
     }
 }
