@@ -91,4 +91,12 @@ class ComplaintController extends Controller
     {
         //
     }
+
+    //update the status of a complaint
+    public function update_status($id){
+      $complaint = Complaint::find($id);
+      $complaint->status = 'Read';
+      $complaint->save();
+      return back()->with('status', 'Status changed');
+    }
 }

@@ -94,4 +94,12 @@ class ProductRequestController extends Controller
         $productrequest->delete();
         return back()->with('status', 'Request deleted');
     }
+
+    //update request Status
+    public function update_status($id){
+      $productrequest = ProductRequest::find($id);
+      $productrequest->status = 'Read';
+      $productrequest->save();
+      return back()->with('status', 'Status changed');
+    }
 }

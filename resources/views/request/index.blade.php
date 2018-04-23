@@ -52,7 +52,7 @@
                                             <th>Requested product</th>
                                             <th>Customer</th>
                                             <th>Date</th>
-                                            <th>Action</th>
+                                            <th>Status</th>
                                         </thead>
                                         <tbody>
                                             <?php $i = 1; ?>
@@ -63,11 +63,11 @@
                                                 <td>{{App\Customer::find($request->customer_id)->name}}</td>
                                                 <td>{{date('d M, Y'), strtotime($request->created_at)}}</td>
                                                 <td>
-                                                  <form method="post" action="{{route('productrequest.destroy', $request->id)}}" id="form{{$request->id}}">
-                                                    @csrf
-                                                    {{method_field('PATCH')}}
-                                                    <button class="delete btn btn-sm btn-danger btn-fill" id="{{$request->id}}">Delete</button>
-                                                  </form>
+                                                  @if($request->status == 'Unread')
+                                                  <a class="btn btn-sm btn-warning"  href="/productrequest/status/update/{{$request->id}}"> Mark as read</a>
+                                                  @else
+                                                  <span class="badge badge-success">Read</span>
+                                                  @endif
                                                 </td>
 
                                                 <?php $i++; ?>

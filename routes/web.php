@@ -31,6 +31,8 @@ Route::group(['middleware' => 'auth'], function(){
   Route::post('/transaction/customer', 'TransactionController@checkout_customer');
   Route::post('/transaction/guest', 'TransactionController@checkout_guest');
   Route::get('/transaction/invoice/{id}', 'TransactionController@invoice');
+  Route::get('/complaint/status/update/{id}', 'ComplaintController@update_status');
+  Route::get('/productrequest/status/update/{id}', 'ProductRequestController@update_status');
   Route::resource('/complaint', 'ComplaintController');
   Route::resource('/productrequest', 'ProductRequestController');
 });

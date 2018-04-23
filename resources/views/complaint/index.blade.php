@@ -52,6 +52,7 @@
                                             <th>Subject</th>
                                             <th>Customer</th>
                                             <th>Date</th>
+                                            <th>Status</th>
                                             <th>Action</th>
                                         </thead>
                                         <tbody>
@@ -62,7 +63,13 @@
                                                 <td>{{$complaint->title}} </td>
                                                 <td>{{App\Customer::find($complaint->customer_id)->name}}</td>
                                                 <td>{{date('d M, Y'), strtotime($complaint->created_at)}}</td>
-
+                                                <td>
+                                                  @if($complaint->status == 'Unread')
+                                                  <a class="btn btn-sm btn-warning"  href="/complaint/status/update/{{$complaint->id}}"> Mark as read</a>
+                                                  @else
+                                                  <span class="badge badge-success">Read</span>
+                                                  @endif
+                                                </td>
                                                 <td>
                                                     <a class="btn btn-success btn-sm " href="#" data-toggle = "modal" data-target = "#show"
                                                      data-id= "{{$complaint->id}}"
